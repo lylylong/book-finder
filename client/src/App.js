@@ -1,4 +1,5 @@
 import React from "react";
+// ApolloProvider is special type of React component, provides data to all other components
 import { ApolloProvider } from "@apollo/react-hooks";
 import ApolloClient from "apollo-boost";
 
@@ -23,6 +24,7 @@ const client = new ApolloClient({
 });
 
 function App() {
+  // passing the client variable so the JSX will have access to the server's API data
   return (
     <ApolloProvider client={client}>
       <Router>

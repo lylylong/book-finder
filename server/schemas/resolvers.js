@@ -1,9 +1,11 @@
 // import the Mongoose models:
 const { User } = require("../models");
+// import the GraphQL's built-in error handling fns
 const { AuthenticationError } = require("apollo-server-express");
 const { signToken } = require("../utils/auth");
 
 const resolvers = {
+  // get requests
   Query: {
     me: async (parent, args, context) => {
       if (context.user) {
@@ -22,7 +24,7 @@ const resolvers = {
       return User.findOne({ username }).select("-__v -password");
     },
   },
-
+  // mutations are intended for any change: creating, updating, or deleting
   Mutation: {
     addUser: async (parent, args) => {
       const user = await User.create(args);
@@ -30,7 +32,6 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
       if (!user) {
@@ -44,7 +45,6 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-
     saveBook: async (parent, { bookData }, context) => {
       if (context.user) {
         const updatedUser = await User.findByIdAndUpdate(
